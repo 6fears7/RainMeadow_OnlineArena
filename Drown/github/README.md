@@ -5,7 +5,7 @@
 
 ## Overview
 
-Work **with**  or **against** your friends to open the dens before you drown in a sea of creatures. 
+Work **with**  or **against** your friends to open the dens before you drown in a sea of creatures. Toggle spear hits in the multiplayer menu for cooperative or competitive interactions. Cooperative will pool your points you earn, Competitive will not.
 
 Land spears to earn points. Points net you weapons, revives, and ultimately... your escape.
 
