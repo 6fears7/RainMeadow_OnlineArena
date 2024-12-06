@@ -9,18 +9,6 @@ namespace Drown
     {
 
         public static ArenaSetup.GameTypeID Drown = new ArenaSetup.GameTypeID("Drown", register: true);
-
-        //public static bool isDrownModeMode(out DrownMode gameMode)
-        //{
-        //    gameMode = null;
-        //    if (OnlineManager.lobby != null && OnlineManager.lobby.gameMode is ArenaOnlineGameMode arena && arena.currentGameMode == Drown.value)
-        //    {
-        //        gameMode = (arena.onlineArenaGameMode as DrownMode);
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
         public bool isInStore = false;
 
         public static int currentPoints;
@@ -45,6 +33,10 @@ namespace Drown
         public override void ArenaSessionCtor(ArenaOnlineGameMode arena, On.ArenaGameSession.orig_ctor orig, ArenaGameSession self, RainWorldGame game)
         {
             currentPoints = 5;
+            foreach (var player in self.arenaSitting.players)
+            {
+                player.score = currentPoints;
+            }
         }
 
         public override void InitAsCustomGameType(ArenaSetup.GameTypeSetup self)
@@ -79,25 +71,6 @@ namespace Drown
 
         }
 
-        public override void Killing(ArenaOnlineGameMode arena, On.ArenaGameSession.orig_Killing orig, ArenaGameSession self, Player player, Creature killedCrit, int playerIndex)
-        {
-            
-            currentPoints++;
-            
-            self.arenaSitting.players[playerIndex].score = currentPoints;
-            if (!self.GameTypeSetup.spearsHitPlayers) // team work makes the dream work
-            {
-                for (int i = 0; i < arena.arenaSittingOnlineOrder.Count; i++)
-                {
-                    var currentPlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, i);
-                    if (!currentPlayer.isMe)
-                    {
-                        currentPlayer.InvokeOnceRPC(DrownModeRPCs.Arena_IncrementPlayerScore, currentPoints);
-                    }
-                }
-            }
-        }
-
         public override int TimerDuration
         {
             get { return _timerDuration; }
@@ -109,7 +82,8 @@ namespace Drown
             if (!openedDen)
             {
                 return ++timer;
-            } else
+            }
+            else
             {
                 return timer;
             }
@@ -119,17 +93,17 @@ namespace Drown
         {
             currentPoints++;
             aPlayer.score = currentPoints;
-            if (!self.GameTypeSetup.spearsHitPlayers) // team work makes the dream work
+
+            for (int i = 0; i < arena.arenaSittingOnlineOrder.Count; i++)
             {
-                for (int i = 0; i < arena.arenaSittingOnlineOrder.Count; i++)
+                var currentPlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, i);
+                if (!currentPlayer.isMe)
                 {
-                    var currentPlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, i);
-                    if (!currentPlayer.isMe)
-                    {
-                        currentPlayer.InvokeOnceRPC(DrownModeRPCs.Arena_IncrementPlayerScore, currentPoints);
-                    }
+                    currentPlayer.InvokeOnceRPC(DrownModeRPCs.Arena_IncrementPlayerScore, currentPoints, OnlineManager.mePlayer.inLobbyId);
+
                 }
             }
+
         }
 
         public override void HUD_InitMultiplayerHud(ArenaOnlineGameMode arena, HUD.HUD self, ArenaGameSession session)
@@ -148,7 +122,8 @@ namespace Drown
             {
                 return "spearSymbol";
 
-            } else
+            }
+            else
             {
                 return base.AddCustomIcon(arena, hud);
             }
