@@ -110,7 +110,10 @@ public override void HUD_InitMultiplayerHud(ArenaOnlineGameMode arena, HUD.HUD s
 
 If you are going to use a custom hook not provided by ExternalGameMode, you MUST wrap it in an online arena check + your game mode:
 ```
-if (RainMeadow.isArenaMode(out var arena) && arena.onlineArenaGameMode = arena.registeredGameModes.FirstOrDefault(kvp => kvp.Value == MyNewExternalArenaGameMode.MyGameModeName.value).Key) { // code here }
+            if (RainMeadow.RainMeadow.isArenaMode(out var arena) && arena.onlineArenaGameMode == arena.registeredGameModes.FirstOrDefault(kvp => kvp.Value == MyNewExtDernalArenaGameMode.MyGameModeName.value).Key)
+            { // code here }
+
+            }
 ```
 
 In this example, we don't want the default online arena HUD elements and we don't want to add our own at the normal hook point. Maybe we want to block all HUD elements in-game:
