@@ -9,6 +9,18 @@ namespace Drown
     {
 
         public static ArenaSetup.GameTypeID Drown = new ArenaSetup.GameTypeID("Drown", register: true);
+
+        //public static bool isDrownModeMode(out DrownMode gameMode)
+        //{
+        //    gameMode = null;
+        //    if (OnlineManager.lobby != null && OnlineManager.lobby.gameMode is ArenaOnlineGameMode arena && arena.currentGameMode == Drown.value)
+        //    {
+        //        gameMode = (arena.onlineArenaGameMode as DrownMode);
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
         public bool isInStore = false;
 
         public static int currentPoints;

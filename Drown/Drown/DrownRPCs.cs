@@ -16,7 +16,7 @@ namespace Drown
                 }
                 if (!game.GetArenaGameSession.GameTypeSetup.spearsHitPlayers) // team work makes the dream work
                 {
-                    ++score;
+                    DrownMode.currentPoints++;
                 }
                 var oe = ArenaHelpers.FindOnlinePlayerByLobbyId(userWhoScored);
                 var playerWhoScored = ArenaHelpers.FindOnlinePlayerNumber(arena, oe);

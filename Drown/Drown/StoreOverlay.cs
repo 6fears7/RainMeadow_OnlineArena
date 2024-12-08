@@ -61,8 +61,11 @@ namespace Drown
                         case 3:
 
                             didRespawn = false;
-                            RevivePlayer(game.GetArenaGameSession, arena);
-                            didRespawn = true;
+                            if (!didRespawn)
+                            {
+                                RevivePlayer(game.GetArenaGameSession, arena);
+                                didRespawn = true;
+                            }
 
                             break;
                         case 4:
@@ -87,6 +90,7 @@ namespace Drown
                         desiredObject.RealizeInRoom();
                     }
                     DrownMode.currentPoints = DrownMode.currentPoints - itemEntry.Value;
+                    didRespawn = false;
 
 
                 };
@@ -165,7 +169,7 @@ namespace Drown
                         storeItemList[i].button.buttonBehav.greyedOut = true;
 
                     }
-                    if (storeItemList[i].name == "Revive" && foundMe is not null && foundMe.state.alive)
+                    if (storeItemList[i].name == "Respawn" && foundMe is not null && foundMe.state.alive)
                     {
                         storeItemList[i].button.buttonBehav.greyedOut = true;
 
