@@ -34,6 +34,7 @@ namespace Drown
 
         public override void ArenaSessionCtor(ArenaOnlineGameMode arena, On.ArenaGameSession.orig_ctor orig, ArenaGameSession self, RainWorldGame game)
         {
+            DrownMode.openedDen = false;
             currentPoints = 5;
             foreach (var player in self.arenaSitting.players)
             {
@@ -146,7 +147,6 @@ namespace Drown
                     }
                 }
             }
-
             currentWaveTimer--;
             if (currentWaveTimer == 0)
             {
