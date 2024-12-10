@@ -147,14 +147,19 @@ namespace Drown
                     }
                 }
             }
-            currentWaveTimer--;
-            if (currentWaveTimer == 0)
+
+            if (!openedDen)
             {
-                currentWaveTimer = waveStart;
-            }
-            if (currentWaveTimer % waveStart == 0)
-            {
-                session.SpawnCreatures();
+                currentWaveTimer--;
+
+                if (currentWaveTimer == 0)
+                {
+                    currentWaveTimer = waveStart;
+                }
+                if (currentWaveTimer % waveStart == 0)
+                {
+                    session.SpawnCreatures();
+                }
             }
 
         }
