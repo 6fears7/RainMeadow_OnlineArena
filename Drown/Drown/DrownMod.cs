@@ -7,7 +7,7 @@ using System.Security.Permissions;
 using UnityEngine;
 
 //#pragma warning disable CS0618
-[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = false)]
 namespace Drown
 {
     [BepInPlugin("uo.drown", "Drown", "0.1.0")]

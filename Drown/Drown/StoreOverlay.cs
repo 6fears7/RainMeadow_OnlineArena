@@ -18,7 +18,6 @@ namespace Drown
         {
             public OnlinePhysicalObject player;
             public SimplerButton button;
-            public SimplerSymbolButton? kickbutton;
             public bool mutedPlayer;
             private string clientMuteSymbol;
             public Dictionary<string, int> storeItems;
@@ -91,6 +90,10 @@ namespace Drown
                     }
                     DrownMode.currentPoints = DrownMode.currentPoints - itemEntry.Value;
                     didRespawn = false;
+                    overlay.ShutDownProcess();
+                    overlay = null;
+
+
 
 
                 };
