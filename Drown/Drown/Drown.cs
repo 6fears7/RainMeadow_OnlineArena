@@ -165,7 +165,7 @@ namespace Drown
                     session.SpawnCreatures();
                     currentWave++;
                 }
-                if (currentWave % 2 == 0 && currentWave > lastCleanupWave)
+                if (currentWave % 3 == 0 && currentWave > lastCleanupWave)
                 {
                     lastCleanupWave = currentWave;
 
