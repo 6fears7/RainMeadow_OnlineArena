@@ -106,7 +106,7 @@ namespace Drown
         ItemButton itemButtons;
         public DrownMode drown;
 
-        public StoreOverlay(ProcessManager manager, RainWorldGame game, DrownMode drown, ArenaOnlineGameMode arena) : base(manager, RainMeadow.RainMeadow.Ext_ProcessID.SpectatorMode=qq)
+        public StoreOverlay(ProcessManager manager, RainWorldGame game, DrownMode drown, ArenaOnlineGameMode arena) : base(manager, RainMeadow.RainMeadow.Ext_ProcessID.SpectatorMode)
         {
             this.game = game;
             this.drown = drown;
