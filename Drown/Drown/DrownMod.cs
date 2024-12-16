@@ -1,13 +1,10 @@
 ﻿using BepInEx;
-using IL;
-using RainMeadow;
 using System;
 using System.Linq;
 using System.Security.Permissions;
-using UnityEngine;
 
 //#pragma warning disable CS0618
-[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = false)]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 namespace Drown
 {
     [BepInPlugin("uo.drown", "Drown", "0.1.0")]

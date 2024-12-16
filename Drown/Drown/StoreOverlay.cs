@@ -90,12 +90,6 @@ namespace Drown
                     }
                     DrownMode.currentPoints = DrownMode.currentPoints - itemEntry.Value;
                     didRespawn = false;
-                    overlay.ShutDownProcess();
-                    overlay = null;
-
-
-
-
                 };
                 this.button.owner.subObjects.Add(button);
             }
@@ -112,7 +106,7 @@ namespace Drown
         ItemButton itemButtons;
         public DrownMode drown;
 
-        public StoreOverlay(ProcessManager manager, RainWorldGame game, DrownMode drown, ArenaOnlineGameMode arena) : base(manager, RainMeadow.RainMeadow.Ext_ProcessID.SpectatorMode)
+        public StoreOverlay(ProcessManager manager, RainWorldGame game, DrownMode drown, ArenaOnlineGameMode arena) : base(manager, RainMeadow.RainMeadow.Ext_ProcessID.SpectatorMode=qq)
         {
             this.game = game;
             this.drown = drown;
