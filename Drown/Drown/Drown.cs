@@ -1,6 +1,4 @@
 ﻿using RainMeadow;
-using System.Text.RegularExpressions;
-using Menu;
 using System.Linq;
 
 namespace Drown
@@ -19,7 +17,8 @@ namespace Drown
         private int _timerDuration;
         private int waveStart = 1200;
         private int currentWaveTimer = 1200;
-
+        private int currentWave = 0;
+        private int lastCleanupWave = 0;
 
         public override bool IsExitsOpen(ArenaOnlineGameMode arena, On.ArenaBehaviors.ExitManager.orig_ExitsOpen orig, ArenaBehaviors.ExitManager self)
         {
@@ -35,7 +34,9 @@ namespace Drown
         public override void ArenaSessionCtor(ArenaOnlineGameMode arena, On.ArenaGameSession.orig_ctor orig, ArenaGameSession self, RainWorldGame game)
         {
             DrownMode.openedDen = false;
+            currentWave = 1;
             currentPoints = 5;
+            lastCleanupWave = 0;
             foreach (var player in self.arenaSitting.players)
             {
                 player.score = currentPoints;
@@ -60,7 +61,7 @@ namespace Drown
         public override string TimerText()
         {
             var waveTimer = ArenaPrepTimer.FormatTime(currentWaveTimer);
-            return $": Current points: {currentPoints}. Next wave: {waveTimer}";
+            return $": Current points: {currentPoints}. Current Wave: {currentWave}. Next wave: {waveTimer}";
         }
 
         public override int SetTimer(ArenaOnlineGameMode arena)
@@ -159,11 +160,57 @@ namespace Drown
                 if (currentWaveTimer % waveStart == 0)
                 {
                     session.SpawnCreatures();
+                    currentWave++;
+                }
+                if (currentWave % 3 == 0 && currentWave > lastCleanupWave)
+                {
+                    lastCleanupWave = currentWave;
+
+                    CreatureCleanup(arena, session);
                 }
             }
 
         }
 
+        private void CreatureCleanup(ArenaOnlineGameMode arena, ArenaGameSession session)
+        {
+            if (RoomSession.map.TryGetValue(session.room.abstractRoom, out var roomSession))
+            {
+                var entities = session.room.abstractRoom.entities;
+                for (int i = entities.Count - 1; i >= 0; i--)
+                {
+                    if (entities[i] is AbstractPhysicalObject apo && apo is AbstractCreature ac && ac.state.dead && ac.creatureTemplate.type != CreatureTemplate.Type.Slugcat && OnlinePhysicalObject.map.TryGetValue(apo, out var oe))
+                    {
+                        oe.apo.LoseAllStuckObjects();
+                        if (!oe.isMine)
+                        {
+                            oe.beingMoved = true;
+
+                            if (oe.apo.realizedObject is Creature c && c.inShortcut)
+                            {
+                                if (c.RemoveFromShortcuts()) c.inShortcut = false;
+                            }
+
+                            entities.Remove(oe.apo);
+
+                            session.room.abstractRoom.creatures.Remove(oe.apo as AbstractCreature);
+
+                            session.room.RemoveObject(oe.apo.realizedObject);
+                            session.room.CleanOutObjectNotInThisRoom(oe.apo.realizedObject);
+                            oe.beingMoved = false;
+                        }
+                        else 
+                        {
+                            oe.apo.realizedObject.RemoveFromRoom();
+                            oe.ExitResource(roomSession);
+                            oe.ExitResource(roomSession.worldSession);
+                        }
+
+
+                    }
+                }
+            }
+        }
 
     }
 }
