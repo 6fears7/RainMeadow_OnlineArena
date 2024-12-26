@@ -140,7 +140,7 @@ namespace Drown
             {
                 for (int i = 0; i < session.Players.Count; i++)
                 {
-                    if (!OnlinePhysicalObject.map.TryGetValue(session.Players[i], out var onlineC))
+                    if (!OnlinePhysicalObject.map.TryGetValue(session.Players[i], out _))
                     {
                         if (session.Players[i].state.alive) // alive and without an owner? Die
                         {
