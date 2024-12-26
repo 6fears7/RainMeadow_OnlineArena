@@ -50,7 +50,7 @@ namespace Drown
         private void Lizard_Violence(On.Lizard.orig_Violence orig, Lizard self, BodyChunk source, UnityEngine.Vector2? directionAndMomentum, BodyChunk hitChunk, PhysicalObject.Appendage.Pos onAppendagePos, Creature.DamageType type, float damage, float stunBonus)
         {
             orig(self, source, directionAndMomentum, hitChunk, onAppendagePos, type, damage, stunBonus);
-            if (RainMeadow.RainMeadow.isArenaMode(out var arena))
+            if (RainMeadow.RainMeadow.isArenaMode(out var arena) && arena.onlineArenaGameMode == arena.registeredGameModes.FirstOrDefault(kvp => kvp.Value == DrownMode.Drown.value).Key)
             {
                 var game = (RWCustom.Custom.rainWorld.processManager.currentMainLoop as RainWorldGame);
                 if (game.manager.upcomingProcess != null)
@@ -85,7 +85,7 @@ namespace Drown
         private void Creature_Violence(On.Creature.orig_Violence orig, Creature self, BodyChunk source, UnityEngine.Vector2? directionAndMomentum, BodyChunk hitChunk, PhysicalObject.Appendage.Pos hitAppendage, Creature.DamageType type, float damage, float stunBonus)
         {
             orig(self, source, directionAndMomentum, hitChunk, hitAppendage, type, damage, stunBonus);
-            if (RainMeadow.RainMeadow.isArenaMode(out var arena))
+            if (RainMeadow.RainMeadow.isArenaMode(out var arena) && arena.onlineArenaGameMode == arena.registeredGameModes.FirstOrDefault(kvp => kvp.Value == DrownMode.Drown.value).Key)
             {
                 var game = (RWCustom.Custom.rainWorld.processManager.currentMainLoop as RainWorldGame);
                 if (game.manager.upcomingProcess != null)
