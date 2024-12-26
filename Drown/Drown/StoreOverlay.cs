@@ -1,5 +1,4 @@
 ﻿using Menu;
-using On.MoreSlugcats;
 using System.Collections.Generic;
 using UnityEngine;
 using RainMeadow;
@@ -25,12 +24,13 @@ namespace Drown
             public int cost;
             public string name;
             public bool didRespawn;
-            public ItemButton(StoreOverlay menu, Vector2 pos, RainWorldGame game, ArenaOnlineGameMode arena, DrownMode drown, KeyValuePair<string, int> itemEntry, int index, bool canBuy = false)
+            public ItemButton(StoreOverlay menu, Vector2 pos, RainWorldGame game, ArenaOnlineGameMode arena, KeyValuePair<string, int> itemEntry, int index, bool canBuy = false)
             {
                 this.overlay = menu;
                 this.name = itemEntry.Key;
                 this.cost = itemEntry.Value;
-                this.button = new RainMeadow.SimplerButton(menu, menu.pages[0], $"{itemEntry.Key}: {itemEntry.Value}", pos, new Vector2(110, 30));
+
+                this.button = new SimplerButton(menu, menu.pages[0], $"{itemEntry.Key}: {itemEntry.Value}", pos, new Vector2(110, 30));
 
                 AbstractCreature me = null;
 
@@ -114,7 +114,7 @@ namespace Drown
             this.selectedObject = null;
             this.storeItemList = new();
             this.pos = new Vector2(180, 553);
-            this.pages[0].subObjects.Add(new Menu.MenuLabel(this, this.pages[0], this.Translate("STORE"), new(pos.x, pos.y + 30f), new(110, 30), true));
+            this.pages[0].subObjects.Add(new Menu.MenuLabel(this, this.pages[0], this.Translate("STORE"), new Vector2(pos.x, pos.y + 30f), new Vector2(110, 30), true));
             var storeItems = new Dictionary<string, int> {
             { "Spear", 1 },
             { "Explosive Spear", 3 },
@@ -132,7 +132,7 @@ namespace Drown
                 string buttonMessage = $"{item.Key}: {item.Value}";
 
                 // Create a new ItemButton for each dictionary entry
-                this.itemButtons = new ItemButton(this, pos, game, arena, drown, item, index, true);
+                this.itemButtons = new ItemButton(this, pos, game, arena, item, index, true);
                 this.storeItemList.Add(itemButtons);
 
 
