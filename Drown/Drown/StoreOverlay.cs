@@ -90,6 +90,7 @@ namespace Drown
                     }
                     DrownMode.currentPoints = DrownMode.currentPoints - itemEntry.Value;
                     didRespawn = false;
+
                 };
                 this.button.owner.subObjects.Add(button);
             }
@@ -117,10 +118,10 @@ namespace Drown
             this.pages[0].subObjects.Add(new Menu.MenuLabel(this, this.pages[0], this.Translate("STORE"), new Vector2(pos.x, pos.y + 30f), new Vector2(110, 30), true));
             var storeItems = new Dictionary<string, int> {
             { "Spear", 1 },
-            { "Explosive Spear", 3 },
-            { "Scavenger Bomb", 3 },
-            { "Respawn", 5 },
-            { "Open Dens", 30 },
+            { "Explosive Spear", 10 },
+            { "Scavenger Bomb", 10 },
+            { "Respawn", 25 },
+            { "Open Dens", 100 },
 
 
         };
@@ -157,6 +158,27 @@ namespace Drown
 
                 }
             }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                storeItemList[0].button.Clicked();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                storeItemList[1].button.Clicked();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                storeItemList[2].button.Clicked();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                storeItemList[3].button.Clicked();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                storeItemList[4].button.Clicked();
+            }
+
             if (storeItemList != null)
             {
                 for (int i = 0; i < storeItemList.Count; i++)

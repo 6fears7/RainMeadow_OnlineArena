@@ -95,18 +95,6 @@ namespace Drown
 
         public override void LandSpear(ArenaOnlineGameMode arena, ArenaGameSession self, Player player, Creature target, ArenaSitting.ArenaPlayer aPlayer)
         {
-            currentPoints++;
-            aPlayer.score = currentPoints;
-
-            for (int i = 0; i < arena.arenaSittingOnlineOrder.Count; i++)
-            {
-                var currentPlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, i);
-                if (!currentPlayer.isMe)
-                {
-                    currentPlayer.InvokeOnceRPC(DrownModeRPCs.Arena_IncrementPlayerScore, currentPoints, OnlineManager.mePlayer.inLobbyId);
-
-                }
-            }
 
         }
 
