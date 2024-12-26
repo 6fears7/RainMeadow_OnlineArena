@@ -11,6 +11,7 @@ namespace Drown
     [BepInPlugin("uo.drown", "Drown", "0.1.0")]
     public partial class DrownMod : BaseUnityPlugin
     {
+        public static DrownOptions drownOptions;
         public static DrownMod instance;
         private bool init;
         private bool fullyInit;
@@ -19,6 +20,8 @@ namespace Drown
         public void OnEnable()
         {
             instance = this;
+            drownOptions = new DrownOptions(this);
+
 
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
 
@@ -32,6 +35,7 @@ namespace Drown
 
             try
             {
+                MachineConnector.SetRegisteredOI("uo_drown", drownOptions);
 
                 On.Menu.MultiplayerMenu.ctor += MultiplayerMenu_ctor;
                 On.HUD.TextPrompt.AddMessage_string_int_int_bool_bool += TextPrompt_AddMessage_string_int_int_bool_bool;

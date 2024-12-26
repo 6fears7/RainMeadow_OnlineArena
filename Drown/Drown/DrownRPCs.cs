@@ -31,5 +31,17 @@ namespace Drown
            DrownMode.openedDen = denOpen;
 
         }
+
+        [RainMeadow.RPCMethod]
+        public static void SyncRemix(RPCEvent rpcEvent, int spearCost, int spearExplCost, int bombCost, int respCost, int denCost)
+        {
+
+            DrownMode.spearCost = spearCost;
+            DrownMode.spearExplCost = spearExplCost;
+            DrownMode.bombCost = bombCost;
+            DrownMode.respCost = respCost;
+            DrownMode.denCost = denCost;
+
+        }
     }
 }
