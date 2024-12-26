@@ -33,7 +33,7 @@ namespace Drown
         }
 
         [RainMeadow.RPCMethod]
-        public static void SyncRemix(RPCEvent rpcEvent, int spearCost, int spearExplCost, int bombCost, int respCost, int denCost)
+        public static void SyncRemix(RPCEvent rpcEvent, int spearCost, int spearExplCost, int bombCost, int respCost, int denCost, int maxCreatures)
         {
 
             DrownMode.spearCost = spearCost;
@@ -41,6 +41,7 @@ namespace Drown
             DrownMode.bombCost = bombCost;
             DrownMode.respCost = respCost;
             DrownMode.denCost = denCost;
+            DrownMode.maxCreatures = maxCreatures;
 
         }
     }

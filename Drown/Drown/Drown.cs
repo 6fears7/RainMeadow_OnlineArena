@@ -19,6 +19,7 @@ namespace Drown
         public static int bombCost;
         public static int respCost;
         public static int denCost;
+        public static int maxCreatures;
 
         private int _timerDuration;
         private int waveStart = 1200;
@@ -49,6 +50,7 @@ namespace Drown
             bombCost = DrownMod.drownOptions.PointsForBomb.Value;
             respCost = DrownMod.drownOptions.PointsForRespawn.Value;
             denCost = DrownMod.drownOptions.PointsForDenOpen.Value;
+            maxCreatures = DrownMod.drownOptions.MaxCreatureCount.Value;
 
 
             foreach (var player in self.arenaSitting.players)
@@ -57,7 +59,7 @@ namespace Drown
                 var onlinePlayer = RainMeadow.ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, player.playerNumber);
                 if (OnlineManager.lobby.owner != onlinePlayer) // sync ints to clients
                 {
-                    onlinePlayer.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost);
+                    onlinePlayer.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost, maxCreatures);
 
                 }
             }
@@ -188,7 +190,7 @@ namespace Drown
                         }
 
                     }
-                    if (notSlugcatCount < 10)
+                    if (notSlugcatCount < maxCreatures)
                     {
                         session.SpawnCreatures();
                     }
