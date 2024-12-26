@@ -14,6 +14,13 @@ namespace Drown
         public static int currentPoints;
         public static bool openedDen = false;
 
+        public static int spearCost;
+        public static int spearExplCost;
+        public static int bombCost;
+        public static int respCost;
+        public static int denCost;
+        public static int maxCreatures;
+
         private int _timerDuration;
         private int waveStart = 1200;
         private int currentWaveTimer = 1200;
@@ -37,9 +44,24 @@ namespace Drown
             currentWave = 1;
             currentPoints = 5;
             lastCleanupWave = 0;
+
+            spearCost = DrownMod.drownOptions.PointsForSpear.Value;
+            spearExplCost = DrownMod.drownOptions.PointsForExplSpear.Value;
+            bombCost = DrownMod.drownOptions.PointsForBomb.Value;
+            respCost = DrownMod.drownOptions.PointsForRespawn.Value;
+            denCost = DrownMod.drownOptions.PointsForDenOpen.Value;
+            maxCreatures = DrownMod.drownOptions.MaxCreatureCount.Value;
+
+
             foreach (var player in self.arenaSitting.players)
             {
                 player.score = currentPoints;
+                var onlinePlayer = RainMeadow.ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, player.playerNumber);
+                if (OnlineManager.lobby.owner != onlinePlayer) // sync ints to clients
+                {
+                    onlinePlayer.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost, maxCreatures);
+
+                }
             }
         }
 
@@ -121,6 +143,8 @@ namespace Drown
             }
         }
 
+
+
         public override void ArenaSessionUpdate(ArenaOnlineGameMode arena, ArenaGameSession session)
         {
 
@@ -157,7 +181,19 @@ namespace Drown
                 }
                 if (currentWaveTimer % waveStart == 0)
                 {
-                    session.SpawnCreatures();
+                    var notSlugcatCount = 0;
+                    for (int i = 0; i < session.room.abstractRoom.creatures.Count; i++)
+                    {
+                        if (session.room.abstractRoom.creatures[i].creatureTemplate.type != CreatureTemplate.Type.Slugcat)
+                        {
+                            notSlugcatCount++;
+                        }
+
+                    }
+                    if (notSlugcatCount < maxCreatures)
+                    {
+                        session.SpawnCreatures();
+                    }
                     currentWave++;
                 }
                 if (currentWave % 3 == 0 && currentWave > lastCleanupWave)
