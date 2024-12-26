@@ -157,7 +157,19 @@ namespace Drown
                 }
                 if (currentWaveTimer % waveStart == 0)
                 {
-                    session.SpawnCreatures();
+                    var notSlugcatCount = 0;
+                    for (int i = 0; i < session.room.abstractRoom.creatures.Count; i++)
+                    {
+                        if (session.room.abstractRoom.creatures[i].creatureTemplate.type != CreatureTemplate.Type.Slugcat)
+                        {
+                            notSlugcatCount++;
+                        }
+
+                    }
+                    if (notSlugcatCount < 10)
+                    {
+                        session.SpawnCreatures();
+                    }
                     currentWave++;
                 }
                 if (currentWave % 3 == 0 && currentWave > lastCleanupWave)
