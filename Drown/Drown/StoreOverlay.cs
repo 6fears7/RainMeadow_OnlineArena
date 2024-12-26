@@ -106,7 +106,6 @@ namespace Drown
         public List<ItemButton> storeItemList;
         ItemButton itemButtons;
         public DrownMode drown;
-        public bool didClick;
 
         public StoreOverlay(ProcessManager manager, RainWorldGame game, DrownMode drown, ArenaOnlineGameMode arena) : base(manager, RainMeadow.RainMeadow.Ext_ProcessID.SpectatorMode)
         {
@@ -117,7 +116,6 @@ namespace Drown
             this.storeItemList = new();
             this.pos = new Vector2(180, 553);
             this.pages[0].subObjects.Add(new Menu.MenuLabel(this, this.pages[0], this.Translate("STORE"), new Vector2(pos.x, pos.y + 30f), new Vector2(110, 30), true));
-            didClick = false;
             var storeItems = new Dictionary<string, int> {
             { "Spear", 1 },
             { "Explosive Spear", 10 },
@@ -171,7 +169,6 @@ namespace Drown
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 storeItemList[2].button.Clicked();
-                didClick = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
