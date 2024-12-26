@@ -135,11 +135,21 @@ namespace Drown
 
         public override void ArenaSessionUpdate(ArenaOnlineGameMode arena, ArenaGameSession session)
         {
-            if (session.GameTypeSetup.spearsHitPlayers)
+
+            if (!session.sessionEnded)
             {
                 for (int i = 0; i < session.Players.Count; i++)
                 {
-                    if (!session.sessionEnded)
+                    if (!OnlinePhysicalObject.map.TryGetValue(session.Players[i], out var onlineC))
+                    {
+                        if (session.Players[i].state.alive) // alive and without an owner? Die
+                        {
+                            session.Players[i].Die();
+                        }
+                        session.Players.RemoveAt(i);
+                    }
+
+                    if (session.GameTypeSetup.spearsHitPlayers)
                     {
                         if (session.exitManager.IsPlayerInDen(session.Players[i]))
                         {
@@ -199,7 +209,7 @@ namespace Drown
                             session.room.CleanOutObjectNotInThisRoom(oe.apo.realizedObject);
                             oe.beingMoved = false;
                         }
-                        else 
+                        else
                         {
                             oe.apo.realizedObject.RemoveFromRoom();
                             oe.ExitResource(roomSession);
