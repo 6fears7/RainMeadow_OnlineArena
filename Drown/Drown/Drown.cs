@@ -56,8 +56,8 @@ namespace Drown
             foreach (var player in self.arenaSitting.players)
             {
                 player.score = currentPoints;
-                var onlinePlayer = RainMeadow.ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, player.playerNumber);
-                if (OnlineManager.lobby.owner != onlinePlayer) // sync ints to clients
+                var onlinePlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, player.playerNumber);
+                if (onlinePlayer != OnlineManager.lobby.owner) // sync ints to other clients
                 {
                     onlinePlayer.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost, maxCreatures);
 
@@ -152,15 +152,6 @@ namespace Drown
             {
                 for (int i = 0; i < session.Players.Count; i++)
                 {
-                    if (!OnlinePhysicalObject.map.TryGetValue(session.Players[i], out _))
-                    {
-                        if (session.Players[i].state.alive) // alive and without an owner? Die
-                        {
-                            session.Players[i].Die();
-                        }
-                        session.Players.RemoveAt(i);
-                    }
-
                     if (session.GameTypeSetup.spearsHitPlayers)
                     {
                         if (session.exitManager.IsPlayerInDen(session.Players[i]))
@@ -169,6 +160,7 @@ namespace Drown
                         }
                     }
                 }
+               
             }
 
             if (!openedDen)
@@ -184,7 +176,7 @@ namespace Drown
                     var notSlugcatCount = 0;
                     for (int i = 0; i < session.room.abstractRoom.creatures.Count; i++)
                     {
-                        if (session.room.abstractRoom.creatures[i].creatureTemplate.type != CreatureTemplate.Type.Slugcat)
+                        if (session.room.abstractRoom.creatures[i].creatureTemplate.type != CreatureTemplate.Type.Slugcat && session.room.abstractRoom.creatures[i].state.alive)
                         {
                             notSlugcatCount++;
                         }
@@ -196,7 +188,7 @@ namespace Drown
                     }
                     currentWave++;
                 }
-                if (currentWave % 3 == 0 && currentWave > lastCleanupWave)
+                if (currentWave % 1 == 0 && currentWave > lastCleanupWave)
                 {
                     lastCleanupWave = currentWave;
 
@@ -215,7 +207,15 @@ namespace Drown
                 {
                     if (entities[i] is AbstractPhysicalObject apo && apo is AbstractCreature ac && ac.state.dead && ac.creatureTemplate.type != CreatureTemplate.Type.Slugcat && OnlinePhysicalObject.map.TryGetValue(apo, out var oe))
                     {
-                        oe.apo.LoseAllStuckObjects();
+                        //oe.apo.LoseAllStuckObjects();
+                        for (int num = ac.stuckObjects.Count - 1; num >= 0; num--)
+                        {
+                            if (ac.stuckObjects[num] is AbstractPhysicalObject.AbstractSpearStick && ac.stuckObjects[num].A.type == AbstractPhysicalObject.AbstractObjectType.Spear && ac.stuckObjects[num].A.realizedObject != null)
+                            {
+                                (ac.stuckObjects[num].A.realizedObject as Spear).ChangeMode(Weapon.Mode.Free);
+                            }
+                        }
+                        ac.LoseAllStuckObjects();
                         if (!oe.isMine)
                         {
                             oe.beingMoved = true;
@@ -235,9 +235,10 @@ namespace Drown
                         }
                         else
                         {
-                            oe.apo.realizedObject.RemoveFromRoom();
                             oe.ExitResource(roomSession);
                             oe.ExitResource(roomSession.worldSession);
+                            oe.apo.realizedObject.RemoveFromRoom();
+
                         }
 
 
