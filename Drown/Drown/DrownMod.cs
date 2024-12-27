@@ -42,7 +42,7 @@ namespace Drown
                 On.Creature.Violence += Creature_Violence;
                 On.Lizard.Violence += Lizard_Violence;
                 On.CompetitiveGameSession.ShouldSessionEnd += CompetitiveGameSession_ShouldSessionEnd;
-                
+
 
                 fullyInit = true;
             }
@@ -53,13 +53,38 @@ namespace Drown
             }
         }
 
+
+
         private bool CompetitiveGameSession_ShouldSessionEnd(On.CompetitiveGameSession.orig_ShouldSessionEnd orig, CompetitiveGameSession self)
         {
             if (RainMeadow.RainMeadow.isArenaMode(out var arena) && arena.onlineArenaGameMode == arena.registeredGameModes.FirstOrDefault(kvp => kvp.Value == DrownMode.Drown.value).Key)
             {
-                if (DrownMode.currentPoints >= DrownMode.respCost)
+                if (self.GameTypeSetup.spearsHitPlayers) // Competitive
                 {
-                    return false;
+                    if (DrownMode.currentPoints >= DrownMode.respCost && !DrownMode.openedDen) // We can still respawn
+                    {
+                        return false;
+                    }
+
+                    var alivePlayers = self.Players.Where(player => player.state.alive);
+                    var myPlayer = self.Players.Find(player => player.state.alive && OnlinePhysicalObject.map.TryGetValue(player, out var onlineP) && onlineP.owner == OnlineManager.mePlayer);
+
+                    if (DrownMode.openedDen && !DrownMode.iOpenedDen && myPlayer != null && myPlayer.realizedCreature != null)
+                    {
+                        myPlayer.realizedCreature.Die();
+                    }
+                    return alivePlayers.Any(player => self.exitManager.playersInDens.Any(denPlayer => denPlayer.creature.abstractCreature == player)) || !self.Players.Any(player => player.state.alive); // Dens are opened and we have no money. Did anyone beat us there or is everyone dead?
+
+                }
+
+                if (!self.GameTypeSetup.spearsHitPlayers) // Cooperative
+                {
+                    if (DrownMode.currentPoints >= DrownMode.respCost && !DrownMode.openedDen) // We can still respawn
+                    {
+                        return false;
+                    }
+                    var alivePlayers = self.Players.Where(player => player.state.alive);
+                    return alivePlayers.All(player => self.exitManager.playersInDens.Any(denPlayer => denPlayer.creature.abstractCreature == player)) || !self.Players.Any(player => player.state.alive);
                 }
             }
             return orig(self);
@@ -72,7 +97,7 @@ namespace Drown
             orig(self, source, directionAndMomentum, hitChunk, onAppendagePos, type, damage, stunBonus);
             if (RainMeadow.RainMeadow.isArenaMode(out var arena) && arena.onlineArenaGameMode == arena.registeredGameModes.FirstOrDefault(kvp => kvp.Value == DrownMode.Drown.value).Key)
             {
-                
+
                 var game = (RWCustom.Custom.rainWorld.processManager.currentMainLoop as RainWorldGame);
                 if (game.manager.upcomingProcess != null)
                 {

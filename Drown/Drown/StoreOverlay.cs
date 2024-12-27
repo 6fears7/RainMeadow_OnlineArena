@@ -68,17 +68,16 @@ namespace Drown
                             break;
                         case 4:
                             DrownMode.openedDen = true;
-                            if (!game.GetArenaGameSession.GameTypeSetup.spearsHitPlayers)
+                            DrownMode.iOpenedDen = true;
+                            for (int j = 0; j < arena.arenaSittingOnlineOrder.Count; j++)
                             {
-                                for (int j = 0; j < arena.arenaSittingOnlineOrder.Count; j++)
+                                var currentPlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, j);
+                                if (!currentPlayer.isMe)
                                 {
-                                    var currentPlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, j);
-                                    if (!currentPlayer.isMe)
-                                    {
-                                        currentPlayer.InvokeOnceRPC(DrownModeRPCs.Arena_OpenDen, DrownMode.openedDen);
-                                    }
+                                    currentPlayer.InvokeOnceRPC(DrownModeRPCs.Arena_OpenDen, DrownMode.openedDen);
                                 }
                             }
+
                             break;
                     }
 
@@ -187,7 +186,7 @@ namespace Drown
                         storeItemList[i].button.buttonBehav.greyedOut = true;
 
                     }
-                    if (storeItemList[i].name == "Respawn" && foundMe is not null && foundMe.state.alive)
+                    if ((storeItemList[i].name == "Respawn" && foundMe is not null && foundMe.state.alive) || DrownMode.openedDen)
                     {
                         storeItemList[i].button.buttonBehav.greyedOut = true;
 
