@@ -13,6 +13,7 @@ namespace Drown
 
         public static int currentPoints;
         public static bool openedDen = false;
+        public static bool iOpenedDen = false;
 
         public static int spearCost;
         public static int spearExplCost;
@@ -41,6 +42,7 @@ namespace Drown
         public override void ArenaSessionCtor(ArenaOnlineGameMode arena, On.ArenaGameSession.orig_ctor orig, ArenaGameSession self, RainWorldGame game)
         {
             DrownMode.openedDen = false;
+            DrownMode.iOpenedDen = false;
             currentWave = 1;
             currentPoints = 5;
             lastCleanupWave = 0;
