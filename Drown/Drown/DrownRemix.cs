@@ -11,6 +11,13 @@ public class DrownOptions : OptionInterface
     public readonly Configurable<int> PointsForRespawn;
     public readonly Configurable<int> PointsForDenOpen;
 
+    public readonly Configurable<KeyCode> StoreItem1;
+    public readonly Configurable<KeyCode> StoreItem2;
+    public readonly Configurable<KeyCode> StoreItem3;
+    public readonly Configurable<KeyCode> StoreItem4;
+    public readonly Configurable<KeyCode> StoreItem5;
+
+
     private UIelement[] OnlineArenaSettings;
 
 
@@ -24,6 +31,11 @@ public class DrownOptions : OptionInterface
         PointsForRespawn= config.Bind("DrownPointsForRespawn", 25);
         PointsForDenOpen = config.Bind("DrownPointsForDenOpen", 100);
 
+        StoreItem1 = config.Bind("DrownStoreItem1", KeyCode.Alpha1);
+        StoreItem2 = config.Bind("DrownStoreItem2", KeyCode.Alpha2);
+        StoreItem3 = config.Bind("DrownStoreItem3", KeyCode.Alpha3);
+        StoreItem4 = config.Bind("DrownStoreItem4", KeyCode.Alpha4);
+        StoreItem5 = config.Bind("DrownStoreItem5", KeyCode.Alpha5);
     }
 
     public override void Initialize()
@@ -32,7 +44,7 @@ public class DrownOptions : OptionInterface
         {
             OpTab drownTab = new OpTab(this, "DROWN");
             Tabs = new OpTab[1] { drownTab };
-            OnlineArenaSettings = new UIelement[13]
+            OnlineArenaSettings = new UIelement[23]
             {
                 new OpLabel(10f, 550f, "DROWN", bigText: true),
                 new OpLabel(10f, 505, "Max creatures in level", bigText: false),
@@ -66,6 +78,22 @@ public class DrownOptions : OptionInterface
                 {
                     accept = OpTextBox.Accept.Int
                 },
+
+                new OpLabel(260, 505, "Key used to activate store item #1", bigText: false),
+                new OpKeyBinder(StoreItem1, new Vector2(260, 475), new Vector2(150f, 30f)),
+
+                new OpLabel(260, 460, "Key used to activate store item #2", bigText: false),
+                new OpKeyBinder(StoreItem2, new Vector2(260, 430), new Vector2(150f, 30f)),
+
+                new OpLabel(260, 410, "Key used to activate store item #3", bigText: false),
+                new OpKeyBinder(StoreItem3, new Vector2(260, 380), new Vector2(150f, 30f)),
+
+                new OpLabel(260, 365, "Key used to activate store item #4", bigText: false),
+                new OpKeyBinder(StoreItem4, new Vector2(260, 340), new Vector2(150f, 30f)),
+
+                new OpLabel(260, 315, "Key used to activate store item #5", bigText: false),
+                new OpKeyBinder(StoreItem5, new Vector2(260, 290), new Vector2(150f, 30f)),
+
 
         };
             drownTab.AddItems(OnlineArenaSettings);

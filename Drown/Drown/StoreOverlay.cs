@@ -158,23 +158,23 @@ namespace Drown
 
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem1.Value) && DrownMode.currentPoints >= storeItemList[0].cost)
             {
                 storeItemList[0].button.Clicked();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem2.Value) && DrownMode.currentPoints >= storeItemList[1].cost)
             {
                 storeItemList[1].button.Clicked();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem3.Value) && DrownMode.currentPoints >= storeItemList[2].cost)
             {
                 storeItemList[2].button.Clicked();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
+            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem4.Value) && DrownMode.currentPoints >= storeItemList[3].cost)
             {
                 storeItemList[3].button.Clicked();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha5))
+            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem5.Value) && DrownMode.currentPoints >= storeItemList[4].cost)
             {
                 storeItemList[4].button.Clicked();
             }
@@ -212,6 +212,21 @@ namespace Drown
             for (int i = 0; i < game.room.world.GetAbstractRoom(0).exits; i++)
             {
                 exitList.Add(i);
+            }
+            for (int p = 0; p < game.Players.Count; p++)
+            {
+                if (OnlinePhysicalObject.map.TryGetValue(game.Players[p], out var onlineP))
+                {
+                    if (onlineP.owner == OnlineManager.mePlayer)
+                    {
+                        game.Players.Remove(game.Players[p]);
+                    }
+                }
+                else
+                {
+                    game.Players.RemoveAt(p);
+
+                }
             }
             arena.avatars.Clear();
             arena.onlineArenaGameMode.SpawnPlayer(arena, game, game.room, exitList);
