@@ -143,7 +143,3 @@ public override void HUD_InitMultiplayerHud(ArenaOnlineGameMode arena, HUD.HUD s
 
         }
 ```
-
-
-## Creating New Properties to Sync
-WIP
