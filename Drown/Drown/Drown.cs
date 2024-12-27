@@ -188,7 +188,7 @@ namespace Drown
                     }
                     currentWave++;
                 }
-                if (currentWave % 1 == 0 && currentWave > lastCleanupWave)
+                if (currentWave % 3 == 0 && currentWave > lastCleanupWave)
                 {
                     lastCleanupWave = currentWave;
 

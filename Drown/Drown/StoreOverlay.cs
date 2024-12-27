@@ -29,7 +29,6 @@ namespace Drown
                 this.overlay = menu;
                 this.name = itemEntry.Key;
                 this.cost = itemEntry.Value;
-
                 this.button = new SimplerButton(menu, menu.pages[0], $"{itemEntry.Key}: {itemEntry.Value}", pos, new Vector2(110, 30));
 
                 AbstractCreature me = null;
