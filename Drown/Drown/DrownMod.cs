@@ -71,6 +71,7 @@ namespace Drown
 
                     if (DrownMode.openedDen && !DrownMode.iOpenedDen && myPlayer != null && myPlayer.realizedCreature != null)
                     {
+                        self.game.cameras[0].hud.PlaySound(SoundID.MENU_Start_New_Game);
                         myPlayer.realizedCreature.Die();
                     }
                     return alivePlayers.Any(player => self.exitManager.playersInDens.Any(denPlayer => denPlayer.creature.abstractCreature == player)) || !self.Players.Any(player => player.state.alive); // Dens are opened and we have no money. Did anyone beat us there or is everyone dead?
