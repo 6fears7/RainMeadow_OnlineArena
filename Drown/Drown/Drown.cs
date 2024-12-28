@@ -21,6 +21,7 @@ namespace Drown
         public static int respCost;
         public static int denCost;
         public static int maxCreatures;
+        public static int creatureCleanupWaves;
 
         private int _timerDuration;
         private int waveStart = 1200;
@@ -55,6 +56,7 @@ namespace Drown
                 respCost = DrownMod.drownOptions.PointsForRespawn.Value;
                 denCost = DrownMod.drownOptions.PointsForDenOpen.Value;
                 maxCreatures = DrownMod.drownOptions.MaxCreatureCount.Value;
+                creatureCleanupWaves = DrownMod.drownOptions.CreatureCleanup.Value;
             }
 
             foreach (var player in self.arenaSitting.players)
@@ -66,7 +68,7 @@ namespace Drown
             {
                 foreach (var player in OnlineManager.players)
                 {
-                    if (!player.isMe) player.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost, maxCreatures);
+                    if (!player.isMe) player.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost, maxCreatures, creatureCleanupWaves);
 
                 }
             }
@@ -196,7 +198,7 @@ namespace Drown
                     }
                     currentWave++;
                 }
-                if (currentWave % 3 == 0 && currentWave > lastCleanupWave)
+                if (currentWave % creatureCleanupWaves == 0 && currentWave > lastCleanupWave)
                 {
                     lastCleanupWave = currentWave;
 
