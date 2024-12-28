@@ -18,6 +18,8 @@ public class DrownOptions : OptionInterface
     public readonly Configurable<KeyCode> StoreItem3;
     public readonly Configurable<KeyCode> StoreItem4;
     public readonly Configurable<KeyCode> StoreItem5;
+    public readonly Configurable<KeyCode> OpenStore;
+
 
 
     private UIelement[] OnlineArenaSettings;
@@ -40,6 +42,7 @@ public class DrownOptions : OptionInterface
         StoreItem3 = config.Bind("DrownStoreItem3", KeyCode.Alpha3);
         StoreItem4 = config.Bind("DrownStoreItem4", KeyCode.Alpha4);
         StoreItem5 = config.Bind("DrownStoreItem5", KeyCode.Alpha5);
+        OpenStore  = config.Bind("DrownStoreAccess", KeyCode.Tab);
     }
 
     public override void Initialize()
@@ -48,7 +51,7 @@ public class DrownOptions : OptionInterface
         {
             OpTab drownTab = new OpTab(this, "DROWN");
             Tabs = new OpTab[1] { drownTab };
-            OnlineArenaSettings = new UIelement[25]
+            OnlineArenaSettings = new UIelement[27]
             {
                 new OpLabel(10f, 550f, "DROWN", bigText: true),
                 new OpLabel(10f, 505, "Max creatures in level", bigText: false),
@@ -103,6 +106,9 @@ public class DrownOptions : OptionInterface
 
                 new OpLabel(260, 290, "Hot key used to open den", bigText: false),
                 new OpKeyBinder(StoreItem5, new Vector2(260, 260), new Vector2(150f, 30f)),
+
+                new OpLabel(260, 240, "Key used to access store", bigText: false),
+                new OpKeyBinder(OpenStore, new Vector2(260, 210), new Vector2(150f, 30f)),
 
 
         };
