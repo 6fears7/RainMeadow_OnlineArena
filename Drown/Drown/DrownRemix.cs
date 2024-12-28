@@ -10,6 +10,8 @@ public class DrownOptions : OptionInterface
     public readonly Configurable<int> PointsForBomb;
     public readonly Configurable<int> PointsForRespawn;
     public readonly Configurable<int> PointsForDenOpen;
+    public readonly Configurable<int> CreatureCleanup;
+
 
     public readonly Configurable<KeyCode> StoreItem1;
     public readonly Configurable<KeyCode> StoreItem2;
@@ -30,6 +32,8 @@ public class DrownOptions : OptionInterface
         PointsForBomb = config.Bind("DrownPointsForBomb", 10);
         PointsForRespawn= config.Bind("DrownPointsForRespawn", 25);
         PointsForDenOpen = config.Bind("DrownPointsForDenOpen", 100);
+        CreatureCleanup = config.Bind("DrownCreatureCleanup", 3);
+
 
         StoreItem1 = config.Bind("DrownStoreItem1", KeyCode.Alpha1);
         StoreItem2 = config.Bind("DrownStoreItem2", KeyCode.Alpha2);
@@ -44,7 +48,7 @@ public class DrownOptions : OptionInterface
         {
             OpTab drownTab = new OpTab(this, "DROWN");
             Tabs = new OpTab[1] { drownTab };
-            OnlineArenaSettings = new UIelement[23]
+            OnlineArenaSettings = new UIelement[25]
             {
                 new OpLabel(10f, 550f, "DROWN", bigText: true),
                 new OpLabel(10f, 505, "Max creatures in level", bigText: false),
@@ -79,20 +83,26 @@ public class DrownOptions : OptionInterface
                     accept = OpTextBox.Accept.Int
                 },
 
-                new OpLabel(260, 505, "Key used to activate store item #1", bigText: false),
-                new OpKeyBinder(StoreItem1, new Vector2(260, 475), new Vector2(150f, 30f)),
+                new OpLabel(10f, 215, "How many waves before creature cleanup", bigText: false),
+                new OpTextBox(CreatureCleanup, new Vector2(10, 190), 160f)
+                {
+                    accept = OpTextBox.Accept.Int
+                },
 
-                new OpLabel(260, 460, "Key used to activate store item #2", bigText: false),
-                new OpKeyBinder(StoreItem2, new Vector2(260, 430), new Vector2(150f, 30f)),
+                new OpLabel(260, 500, "Hot key used to buy spear (store needs to be open)", bigText: false),
+                new OpKeyBinder(StoreItem1, new Vector2(260, 470), new Vector2(150f, 30f)),
 
-                new OpLabel(260, 410, "Key used to activate store item #3", bigText: false),
-                new OpKeyBinder(StoreItem3, new Vector2(260, 380), new Vector2(150f, 30f)),
+                new OpLabel(260, 445, "Hot key used to buy explosive spear", bigText: false),
+                new OpKeyBinder(StoreItem2, new Vector2(260, 415), new Vector2(150f, 30f)),
 
-                new OpLabel(260, 365, "Key used to activate store item #4", bigText: false),
-                new OpKeyBinder(StoreItem4, new Vector2(260, 340), new Vector2(150f, 30f)),
+                new OpLabel(260, 390, "Hot key used to buy scav bomb", bigText: false),
+                new OpKeyBinder(StoreItem3, new Vector2(260, 360), new Vector2(150f, 30f)),
 
-                new OpLabel(260, 315, "Key used to activate store item #5", bigText: false),
-                new OpKeyBinder(StoreItem5, new Vector2(260, 290), new Vector2(150f, 30f)),
+                new OpLabel(260, 340, "Hot key used to buy respawn", bigText: false),
+                new OpKeyBinder(StoreItem4, new Vector2(260, 310), new Vector2(150f, 30f)),
+
+                new OpLabel(260, 290, "Hot key used to open den", bigText: false),
+                new OpKeyBinder(StoreItem5, new Vector2(260, 260), new Vector2(150f, 30f)),
 
 
         };
