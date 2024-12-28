@@ -77,6 +77,7 @@ namespace Drown
                                     currentPlayer.InvokeOnceRPC(DrownModeRPCs.Arena_OpenDen, DrownMode.openedDen);
                                 }
                             }
+                            game.cameras[0].hud.PlaySound(SoundID.UI_Multiplayer_Player_Revive);
 
                             break;
                     }
