@@ -47,24 +47,30 @@ namespace Drown
             currentPoints = 5;
             lastCleanupWave = 0;
 
-            spearCost = DrownMod.drownOptions.PointsForSpear.Value;
-            spearExplCost = DrownMod.drownOptions.PointsForExplSpear.Value;
-            bombCost = DrownMod.drownOptions.PointsForBomb.Value;
-            respCost = DrownMod.drownOptions.PointsForRespawn.Value;
-            denCost = DrownMod.drownOptions.PointsForDenOpen.Value;
-            maxCreatures = DrownMod.drownOptions.MaxCreatureCount.Value;
-
+            if (OnlineManager.lobby.isOwner)
+            {
+                spearCost = DrownMod.drownOptions.PointsForSpear.Value;
+                spearExplCost = DrownMod.drownOptions.PointsForExplSpear.Value;
+                bombCost = DrownMod.drownOptions.PointsForBomb.Value;
+                respCost = DrownMod.drownOptions.PointsForRespawn.Value;
+                denCost = DrownMod.drownOptions.PointsForDenOpen.Value;
+                maxCreatures = DrownMod.drownOptions.MaxCreatureCount.Value;
+            }
 
             foreach (var player in self.arenaSitting.players)
             {
                 player.score = currentPoints;
-                var onlinePlayer = ArenaHelpers.FindOnlinePlayerByFakePlayerNumber(arena, player.playerNumber);
-                if (onlinePlayer != OnlineManager.lobby.owner) // sync ints to other clients
+            }
+
+            if (OnlineManager.lobby.isOwner)
+            {
+                foreach (var player in OnlineManager.players)
                 {
-                    onlinePlayer.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost, maxCreatures);
+                    if (!player.isMe) player.InvokeOnceRPC(DrownModeRPCs.SyncRemix, spearCost, spearExplCost, bombCost, respCost, denCost, maxCreatures);
 
                 }
             }
+
         }
 
         public override void InitAsCustomGameType(ArenaSetup.GameTypeSetup self)
@@ -134,7 +140,7 @@ namespace Drown
         }
         public override string AddCustomIcon(ArenaOnlineGameMode arena, PlayerSpecificOnlineHud hud)
         {
-            if (isInStore)
+            if (isInStore && hud.clientSettings.owner == OnlineManager.mePlayer)
             {
                 return "spearSymbol";
 
@@ -162,7 +168,7 @@ namespace Drown
                         }
                     }
                 }
-               
+
             }
 
             if (!openedDen)
