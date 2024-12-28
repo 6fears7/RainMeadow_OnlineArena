@@ -42,6 +42,7 @@ namespace Drown
                 On.Creature.Violence += Creature_Violence;
                 On.Lizard.Violence += Lizard_Violence;
                 On.CompetitiveGameSession.ShouldSessionEnd += CompetitiveGameSession_ShouldSessionEnd;
+                On.Spear.Spear_makeNeedle += Spear_Spear_makeNeedle;
 
 
                 fullyInit = true;
@@ -53,7 +54,15 @@ namespace Drown
             }
         }
 
+        private void Spear_Spear_makeNeedle(On.Spear.orig_Spear_makeNeedle orig, Spear self, int type, bool active)
+        {
+            orig(self, type, active);
+            if (RainMeadow.RainMeadow.isArenaMode(out var arena) && arena.onlineArenaGameMode == arena.registeredGameModes.FirstOrDefault(kvp => kvp.Value == DrownMode.Drown.value).Key)
+            {
+                DrownMode.currentPoints = DrownMode.currentPoints - 1;
+            }
 
+        }
 
         private bool CompetitiveGameSession_ShouldSessionEnd(On.CompetitiveGameSession.orig_ShouldSessionEnd orig, CompetitiveGameSession self)
         {
