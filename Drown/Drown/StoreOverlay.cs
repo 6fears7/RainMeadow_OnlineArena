@@ -169,11 +169,11 @@ namespace Drown
             {
                 storeItemList[2].button.Clicked();
             }
-            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem4.Value) && DrownMode.currentPoints >= storeItemList[3].cost)
+            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem4.Value) && DrownMode.currentPoints >= storeItemList[3].cost && !DrownMode.openedDen)
             {
                 storeItemList[3].button.Clicked();
             }
-            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem5.Value) && DrownMode.currentPoints >= storeItemList[4].cost)
+            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem5.Value) && DrownMode.currentPoints >= storeItemList[4].cost && !DrownMode.openedDen)
             {
                 storeItemList[4].button.Clicked();
             }
@@ -212,21 +212,7 @@ namespace Drown
             {
                 exitList.Add(i);
             }
-            for (int p = 0; p < game.Players.Count; p++)
-            {
-                if (OnlinePhysicalObject.map.TryGetValue(game.Players[p], out var onlineP))
-                {
-                    if (onlineP.owner == OnlineManager.mePlayer)
-                    {
-                        game.Players.Remove(game.Players[p]);
-                    }
-                }
-                else
-                {
-                    game.Players.RemoveAt(p);
 
-                }
-            }
             arena.avatars.Clear();
             arena.onlineArenaGameMode.SpawnPlayer(arena, game, game.room, exitList);
 
