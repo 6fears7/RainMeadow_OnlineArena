@@ -28,7 +28,6 @@ namespace Drown
         private int currentWaveTimer = 1200;
         private int currentWave = 0;
         private int lastCleanupWave = 0;
-
         public override bool IsExitsOpen(ArenaOnlineGameMode arena, On.ArenaBehaviors.ExitManager.orig_ExitsOpen orig, ArenaBehaviors.ExitManager self)
         {
             return openedDen;
@@ -169,6 +168,15 @@ namespace Drown
                             session.EndSession();
                         }
                     }
+
+                    if (!OnlinePhysicalObject.map.TryGetValue(session.Players[i], out var onlineP))
+                    {
+                        if (session.Players[i].state.dead)
+                        {
+                            session.Players.Remove(session.Players[i]);
+                        }
+                    }
+
                 }
 
             }
