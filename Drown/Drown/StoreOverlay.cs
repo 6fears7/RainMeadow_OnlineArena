@@ -216,27 +216,6 @@ namespace Drown
                     storeItemList[4].button.Clicked();
                 }
             }
-
-
-
-
-            //if (storeItemList != null)
-            //{
-            //    for (int i = 0; i < storeItemList.Count; i++)
-            //    {
-            //        //if (foundMe == null && storeItemList[i].name != "Revive")
-            //        //{
-            //        //    storeItemList[i].button.buttonBehav.greyedOut = true;
-
-            //        //}
-            //        if ((storeItemList[i].name == "Respawn" && foundMe is not null && foundMe.state.alive) || DrownMode.openedDen)
-            //        {
-            //            storeItemList[i].button.buttonBehav.greyedOut = true;
-
-            //        }
-
-            //    }
-            //}
         }
 
         private static void RevivePlayer(ArenaGameSession game, ArenaOnlineGameMode arena)
