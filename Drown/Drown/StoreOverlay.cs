@@ -145,61 +145,98 @@ namespace Drown
         public override void Update()
         {
             base.Update();
-            foreach (var c in game.Players)
+            for (int p = 0; p < game.Players.Count; p++)
             {
-                if (OnlinePhysicalObject.map.TryGetValue(c, out var onlineC))
+                if (OnlinePhysicalObject.map.TryGetValue(game.Players[p], out var onlineC))
                 {
 
                     if (onlineC.owner == OnlineManager.mePlayer)
                     {
-                        foundMe = c;
+                        foundMe = game.Players[p];
                     }
 
                 }
+                else
+                {
+                    foundMe = null;
+                }
             }
-            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem1.Value) && DrownMode.currentPoints >= storeItemList[0].cost)
-            {
-                storeItemList[0].button.Clicked();
-            }
-            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem2.Value) && DrownMode.currentPoints >= storeItemList[1].cost)
-            {
-                storeItemList[1].button.Clicked();
-            }
-            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem3.Value) && DrownMode.currentPoints >= storeItemList[2].cost)
-            {
-                storeItemList[2].button.Clicked();
-            }
-            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem4.Value) && DrownMode.currentPoints >= storeItemList[3].cost && !DrownMode.openedDen)
-            {
-                storeItemList[3].button.Clicked();
-            }
-            if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem5.Value) && DrownMode.currentPoints >= storeItemList[4].cost && !DrownMode.openedDen)
-            {
-                storeItemList[4].button.Clicked();
-            }
-
             if (storeItemList != null)
             {
                 for (int i = 0; i < storeItemList.Count; i++)
                 {
-                    if (foundMe == null && storeItemList[i].name != "Revive")
-                    {
-                        storeItemList[i].button.buttonBehav.greyedOut = true;
+                    storeItemList[i].button.buttonBehav.greyedOut = true;
 
-                    }
-                    if ((storeItemList[i].name == "Respawn" && foundMe is not null && foundMe.state.alive) || DrownMode.openedDen)
+                    if (storeItemList[i].name == "Respawn")
                     {
-                        storeItemList[i].button.buttonBehav.greyedOut = true;
+                        if (foundMe is not null && foundMe.state.alive || DrownMode.openedDen)
+                        {
+                            storeItemList[i].button.buttonBehav.greyedOut = true;
 
+                        }
+                        else
+                        {
+                            storeItemList[i].button.buttonBehav.greyedOut = DrownMode.currentPoints < storeItemList[i].cost;
+                        }
                     }
-                    else
+
+                    if (storeItemList[i].name == "Open Dens" && !DrownMode.openedDen)
                     {
                         storeItemList[i].button.buttonBehav.greyedOut = DrownMode.currentPoints < storeItemList[i].cost;
                     }
 
-                }
+                    if (foundMe != null && !DrownMode.openedDen && (storeItemList[i].name != "Respawn" && storeItemList[i].name != "Open Dens"))
+                    {
+                        storeItemList[i].button.buttonBehav.greyedOut = DrownMode.currentPoints < storeItemList[i].cost;
+                    }
 
+
+                }
+                if (foundMe != null)
+                {
+                    if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem1.Value) && DrownMode.currentPoints >= storeItemList[0].cost && !DrownMode.openedDen)
+                    {
+                        storeItemList[0].button.Clicked();
+                    }
+                    if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem2.Value) && DrownMode.currentPoints >= storeItemList[1].cost && !DrownMode.openedDen)
+                    {
+                        storeItemList[1].button.Clicked();
+                    }
+                    if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem3.Value) && DrownMode.currentPoints >= storeItemList[2].cost && !DrownMode.openedDen)
+                    {
+                        storeItemList[2].button.Clicked();
+                    }
+                }
+                if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem4.Value) && DrownMode.currentPoints >= storeItemList[3].cost && !DrownMode.openedDen)
+                {
+                    storeItemList[3].button.Clicked();
+                }
+                if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem5.Value) && DrownMode.currentPoints >= storeItemList[4].cost && !DrownMode.openedDen)
+                {
+                    storeItemList[4].button.Clicked();
+                }
             }
+
+
+
+
+            //if (storeItemList != null)
+            //{
+            //    for (int i = 0; i < storeItemList.Count; i++)
+            //    {
+            //        //if (foundMe == null && storeItemList[i].name != "Revive")
+            //        //{
+            //        //    storeItemList[i].button.buttonBehav.greyedOut = true;
+
+            //        //}
+            //        if ((storeItemList[i].name == "Respawn" && foundMe is not null && foundMe.state.alive) || DrownMode.openedDen)
+            //        {
+            //            storeItemList[i].button.buttonBehav.greyedOut = true;
+
+            //        }
+
+            //    }
+            //}
         }
 
         private static void RevivePlayer(ArenaGameSession game, ArenaOnlineGameMode arena)

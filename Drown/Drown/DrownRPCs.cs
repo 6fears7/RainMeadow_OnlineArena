@@ -29,7 +29,16 @@ namespace Drown
         {
 
            DrownMode.openedDen = denOpen;
+            var game = (RWCustom.Custom.rainWorld.processManager.currentMainLoop as RainWorldGame);
+            if (game.manager.upcomingProcess != null)
+            {
+                return;
+            }
 
+            if (!game.GetArenaGameSession.GameTypeSetup.spearsHitPlayers)
+            {
+                game.cameras[0].hud.PlaySound(SoundID.UI_Multiplayer_Player_Revive);
+            }
         }
 
         [RainMeadow.RPCMethod]
