@@ -169,12 +169,9 @@ namespace Drown
                         }
                     }
 
-                    if (!OnlinePhysicalObject.map.TryGetValue(session.Players[i], out var onlineP))
+                    if (!OnlinePhysicalObject.map.TryGetValue(session.Players[i], out var onlineP) || session.Players[i].state.dead)
                     {
-                        if (session.Players[i].state.dead)
-                        {
-                            session.Players.Remove(session.Players[i]);
-                        }
+                        session.Players.Remove(session.Players[i]);
                     }
 
                 }
@@ -223,9 +220,8 @@ namespace Drown
                 var entities = session.room.abstractRoom.entities;
                 for (int i = entities.Count - 1; i >= 0; i--)
                 {
-                    if (entities[i] is AbstractPhysicalObject apo && apo is AbstractCreature ac && ac.state.dead && ac.creatureTemplate.type != CreatureTemplate.Type.Slugcat && OnlinePhysicalObject.map.TryGetValue(apo, out var oe))
+                    if (entities[i] is AbstractPhysicalObject apo && apo is AbstractCreature ac && ac.state.dead && ac.realizedCreature.grabbedBy.Count <= 0 && ac.creatureTemplate.type != CreatureTemplate.Type.Slugcat && OnlinePhysicalObject.map.TryGetValue(apo, out var oe))
                     {
-                        //oe.apo.LoseAllStuckObjects();
                         for (int num = ac.stuckObjects.Count - 1; num >= 0; num--)
                         {
                             if (ac.stuckObjects[num] is AbstractPhysicalObject.AbstractSpearStick && ac.stuckObjects[num].A.type == AbstractPhysicalObject.AbstractObjectType.Spear && ac.stuckObjects[num].A.realizedObject != null)

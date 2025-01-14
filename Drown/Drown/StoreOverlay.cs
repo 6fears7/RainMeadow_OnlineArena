@@ -207,7 +207,7 @@ namespace Drown
                         storeItemList[2].button.Clicked();
                     }
                 }
-                if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem4.Value) && DrownMode.currentPoints >= storeItemList[3].cost && !DrownMode.openedDen)
+                if (Input.GetKeyDown(DrownMod.drownOptions.StoreItem4.Value) && DrownMode.currentPoints >= storeItemList[3].cost && !DrownMode.openedDen && (foundMe == null || foundMe.state.dead))
                 {
                     storeItemList[3].button.Clicked();
                 }
