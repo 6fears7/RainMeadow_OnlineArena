@@ -8,7 +8,7 @@ using System.Security.Permissions;
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 namespace Drown
 {
-    [BepInPlugin("uo.drown", "Drown", "0.1.4")]
+    [BepInPlugin("uo.drown", "Drown", "0.1.5")]
     public partial class DrownMod : BaseUnityPlugin
     {
         public static DrownOptions drownOptions;
@@ -145,6 +145,7 @@ namespace Drown
         private void Creature_Violence(On.Creature.orig_Violence orig, Creature self, BodyChunk source, UnityEngine.Vector2? directionAndMomentum, BodyChunk hitChunk, PhysicalObject.Appendage.Pos hitAppendage, Creature.DamageType type, float damage, float stunBonus)
         {
             orig(self, source, directionAndMomentum, hitChunk, hitAppendage, type, damage, stunBonus);
+
             if (self.State.dead)
             {
                 return;
